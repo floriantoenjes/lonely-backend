@@ -1,11 +1,15 @@
 package com.floriantoenjes.lonely.user.profile;
 
+import com.floriantoenjes.lonely.location.Location;
 import com.floriantoenjes.lonely.meetup.Meetup;
 import lombok.Data;
+import org.springframework.data.mongodb.core.mapping.DBRef;
+import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.util.List;
 
 @Data
+@Document
 public class Profile {
     private String id;
 
@@ -15,7 +19,7 @@ public class Profile {
 
     private String lastName;
 
-    private String location;
+    private Location location;
 
     private Sex sex;
 
@@ -23,6 +27,7 @@ public class Profile {
 
     private String pictureURL;
 
+    @DBRef
     private List<Meetup> meetups;
 
     public Profile(String id) {
