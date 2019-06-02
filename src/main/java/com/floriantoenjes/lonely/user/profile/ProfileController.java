@@ -15,12 +15,12 @@ public class ProfileController {
         this.profileRepository = profileRepository;
     }
 
-    @GetMapping()
+    @GetMapping
     public List<Profile> getProfiles() {
         return profileRepository.findAll();
     }
 
-    @PostMapping()
+    @PostMapping
     public Profile updateProfile(@RequestBody Profile profile) {
         return profileRepository.save(profile);
     }
