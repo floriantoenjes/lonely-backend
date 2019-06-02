@@ -1,0 +1,23 @@
+package com.floriantoenjes.lonely.meetup;
+
+import com.floriantoenjes.lonely.location.Location;
+import com.floriantoenjes.lonely.user.profile.Profile;
+import lombok.Data;
+
+import java.time.LocalDateTime;
+import java.util.List;
+
+@Data
+public class Meetup {
+    private String id;
+
+    private LocalDateTime localDateTime;
+
+    private String title;
+
+    private String description;
+
+    private Location location;
+
+    private List<Profile> attendees;
+}
