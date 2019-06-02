@@ -29,10 +29,6 @@ public class Profile {
 
     @DBRef
     private List<Meetup> meetups;
-
-    public Profile(String id) {
-        this.id = id;
-    }
 }
 
 enum Sex {

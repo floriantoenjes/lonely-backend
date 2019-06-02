@@ -1,11 +1,9 @@
 package com.floriantoenjes.lonely.user.profile;
 
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/profile")
@@ -23,8 +21,13 @@ public class ProfileController {
     }
 
     @PostMapping()
-    public Profile updateProfile(Profile profile) {
+    public Profile updateProfile(@RequestBody Profile profile) {
         return profileRepository.save(profile);
+    }
+
+    @GetMapping("/{id}")
+    public Optional<Profile> getProfile(@PathVariable String id) {
+        return profileRepository.findById(id);
     }
 
 }
