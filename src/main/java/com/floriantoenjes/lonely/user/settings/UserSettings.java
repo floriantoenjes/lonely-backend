@@ -1,6 +1,8 @@
 package com.floriantoenjes.lonely.user.settings;
 
+import com.floriantoenjes.lonely.user.profile.Profile;
 import lombok.Data;
+import org.springframework.data.mongodb.core.mapping.DBRef;
 
 import java.time.LocalDateTime;
 
@@ -9,7 +11,8 @@ public class UserSettings {
 
     private String id;
 
-    private String userId;
+    @DBRef
+    private Profile profile;
 
     private LocalDateTime lonelyDateTime;
 
