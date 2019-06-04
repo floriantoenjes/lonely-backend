@@ -27,6 +27,8 @@ public class Profile {
 
     private String pictureURL;
 
+    private String description;
+
     @DBRef
     private List<Meetup> meetups;
 }

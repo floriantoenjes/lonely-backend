@@ -14,6 +14,8 @@ import java.util.List;
 public class Meetup {
     private String id;
 
+    private LocalDateTime createdAt;
+
     private LocalDateTime localDateTime;
 
     private String title;

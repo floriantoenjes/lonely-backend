@@ -14,6 +14,8 @@ public class UserSettings {
     @DBRef
     private Profile profile;
 
+    private boolean lonelyToday;
+
     private LocalDateTime lonelyDateTime;
 
     private int radius;
