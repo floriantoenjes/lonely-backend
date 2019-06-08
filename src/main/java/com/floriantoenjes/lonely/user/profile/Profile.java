@@ -5,7 +5,9 @@ import com.floriantoenjes.lonely.meetup.Meetup;
 import lombok.Data;
 import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.security.core.context.SecurityContextHolder;
 
+import javax.annotation.PostConstruct;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -14,7 +16,7 @@ import java.util.List;
 public class Profile {
     private String id;
 
-    private String userId;
+    private String username;
 
     private String firstName;
 

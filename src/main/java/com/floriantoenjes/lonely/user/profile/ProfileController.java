@@ -1,5 +1,6 @@
 package com.floriantoenjes.lonely.user.profile;
 
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -22,6 +23,7 @@ public class ProfileController {
 
     @PostMapping
     public Profile updateProfile(@RequestBody Profile profile) {
+        profile.setUsername(SecurityContextHolder.getContext().getAuthentication().getName());
         return profileRepository.save(profile);
     }
 
