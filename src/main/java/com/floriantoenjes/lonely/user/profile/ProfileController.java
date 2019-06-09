@@ -1,10 +1,11 @@
 package com.floriantoenjes.lonely.user.profile;
 
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Optional;
+
+import static com.floriantoenjes.lonely.utils.AuthUtils.getUsernameFromAuth;
 
 @RestController
 @RequestMapping("/profile")
@@ -23,13 +24,13 @@ public class ProfileController {
 
     @PostMapping
     public Profile updateProfile(@RequestBody Profile profile) {
-        profile.setUsername(SecurityContextHolder.getContext().getAuthentication().getName());
+        profile.setUsername(getUsernameFromAuth());
         return profileRepository.save(profile);
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("/my-profile")
     public Optional<Profile> getProfile(@PathVariable String id) {
-        return profileRepository.findById(id);
+        return profileRepository.findByUsername(getUsernameFromAuth());
     }
 
 }
