@@ -2,6 +2,7 @@ package com.floriantoenjes.lonely.user.settings;
 
 import com.floriantoenjes.lonely.user.profile.Profile;
 import com.floriantoenjes.lonely.user.profile.ProfileRepository;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.*;
 
@@ -41,6 +42,7 @@ public class UserSettingsController {
 
 }
 
+@ResponseStatus(value = HttpStatus.NOT_FOUND)
 class ProfileNotFoundException extends RuntimeException {
 
     ProfileNotFoundException(String message) {
