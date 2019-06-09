@@ -3,6 +3,7 @@ package com.floriantoenjes.lonely.user.profile;
 import com.floriantoenjes.lonely.location.Location;
 import com.floriantoenjes.lonely.meetup.Meetup;
 import lombok.Data;
+import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 
@@ -14,6 +15,7 @@ import java.util.List;
 public class Profile {
     private String id;
 
+    @Indexed(unique = true)
     private String username;
 
     private String firstName;
