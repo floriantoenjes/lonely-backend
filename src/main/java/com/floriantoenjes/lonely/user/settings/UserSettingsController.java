@@ -26,20 +26,22 @@ public class UserSettingsController {
     @PostMapping
     public UserSettings saveSettings(@RequestBody UserSettings userSettings) {
         Optional<Profile> profile = profileRepository.findByUsername(getUsernameFromAuth());
-        profile.orElseThrow(() -> new UsernameNotFoundException("User not found"));
+        profile.orElseThrow(() -> new ProfileNotFoundException("Profile not found"));
 
         Optional<UserSettings> existingSettings = userSettingsRepository.findByProfileId(profile.get().getId());
         existingSettings.ifPresent(userSettings1 -> userSettings.setId(userSettings1.getId()));
 
+        userSettings.setProfile(profile.get());
         return userSettingsRepository.save(userSettings);
     }
 
     @GetMapping("my-settings")
     public UserSettings getSettingsByProfileId() {
         Optional<Profile> profile = profileRepository.findByUsername(getUsernameFromAuth());
-        profile.orElseThrow(() -> new UsernameNotFoundException("User not found"));
+        profile.orElseThrow(() -> new ProfileNotFoundException("Profile not found"));
 
-        return userSettingsRepository.findByProfileId(profile.get().getId()).orElseThrow(() -> new ProfileNotFoundException("Profile not found"));
+        return userSettingsRepository.findByProfileId(profile.get().getId())
+                .orElseThrow(() -> new UserSettingsNotFoundException("User settings not found"));
     }
 
 }
@@ -50,5 +52,12 @@ class ProfileNotFoundException extends RuntimeException {
     ProfileNotFoundException(String message) {
         super(message);
     }
+}
 
+@ResponseStatus(value = HttpStatus.NOT_FOUND)
+class UserSettingsNotFoundException extends RuntimeException {
+
+    UserSettingsNotFoundException(String message) {
+        super(message);
+    }
 }
