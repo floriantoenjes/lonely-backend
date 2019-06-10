@@ -34,7 +34,7 @@ public class ProfileController {
     }
 
     @GetMapping("/my-profile")
-    public Optional<Profile> getProfile(@PathVariable String id) {
+    public Optional<Profile> getProfile() {
         return profileRepository.findByUsername(getUsernameFromAuth());
     }
 
