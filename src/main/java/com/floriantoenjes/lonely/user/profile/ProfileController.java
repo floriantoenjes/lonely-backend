@@ -24,7 +24,12 @@ public class ProfileController {
 
     @PostMapping
     public Profile updateProfile(@RequestBody Profile profile) {
-        profile.setUsername(getUsernameFromAuth());
+        String username = getUsernameFromAuth();
+
+        Optional<Profile> existingProfile = profileRepository.findByUsername(username);
+        existingProfile.ifPresent(profile1 -> profile.setId(profile1.getId()));
+        profile.setUsername(username);
+
         return profileRepository.save(profile);
     }
 

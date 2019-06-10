@@ -27,7 +27,9 @@ public class UserSettingsController {
     public UserSettings saveSettings(@RequestBody UserSettings userSettings) {
         Optional<Profile> profile = profileRepository.findByUsername(getUsernameFromAuth());
         profile.orElseThrow(() -> new UsernameNotFoundException("User not found"));
-        userSettings.setProfile(profile.get());
+
+        Optional<UserSettings> existingSettings = userSettingsRepository.findByProfileId(profile.get().getId());
+        existingSettings.ifPresent(userSettings1 -> userSettings.setId(userSettings1.getId()));
 
         return userSettingsRepository.save(userSettings);
     }
