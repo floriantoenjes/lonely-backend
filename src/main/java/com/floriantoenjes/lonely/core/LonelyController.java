@@ -38,7 +38,8 @@ public class LonelyController {
         );
 
         Iterable<Profile> lonelyProfiles = profileRepository.findAllById(
-                userSettings.stream().filter(settings -> settings.getProfile() != null).map(settings -> settings.getProfile().getId()).collect(Collectors.toList())
+                userSettings.stream().filter(settings -> settings.getProfile() != null)
+                        .map(settings -> settings.getProfile().getId()).collect(Collectors.toList())
         );
 
         lonelyProfiles.forEach(profile -> {
