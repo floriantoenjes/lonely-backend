@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -65,8 +66,13 @@ public class LonelyController {
                     float profileLat = (float) profileLocation.getLatitude();
                     float profileLng = (float) profileLocation.getLongitude();
 
-                    return distFrom(signedInUserLat, signedInUserLng, profileLat, profileLng) / 1000.0
-                            <= signedInUserSettings.getRadius();
+                    LocalDate from = LocalDate.now().minusYears(signedInUserSettings.getMeetUpAgeTo());
+                    LocalDate to = LocalDate.now().minusYears(signedInUserSettings.getMeetUpAgeFrom());
+
+                    return isAgeInRange(profile.getBirthDate(), from, to)
+                            && isInRadius(signedInUserLat, signedInUserLng,
+                            profileLat, profileLng, signedInUserSettings.getRadius());
+
                 }).collect(Collectors.toList());
 
         lonelyProfilesInRange.forEach(profile -> {
@@ -82,6 +88,14 @@ public class LonelyController {
         });
 
         return partialProfileList;
+    }
+
+    private boolean isAgeInRange(LocalDate date, LocalDate from, LocalDate to) {
+        return date.isAfter(from) && date.isBefore(to);
+    }
+
+    private boolean isInRadius(float lat1, float lng1, float lat2, float lng2, int radius) {
+        return distFrom(lat1, lng1, lat2, lng2) / 1000.0 <= radius;
     }
 
     private static float distFrom(float lat1, float lng1, float lat2, float lng2) {
