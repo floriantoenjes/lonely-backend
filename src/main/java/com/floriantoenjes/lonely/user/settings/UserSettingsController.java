@@ -1,8 +1,8 @@
 package com.floriantoenjes.lonely.user.settings;
 
 import com.floriantoenjes.lonely.user.profile.Profile;
+import com.floriantoenjes.lonely.user.profile.ProfileNotFoundException;
 import com.floriantoenjes.lonely.user.profile.ProfileRepository;
-import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Optional;
@@ -45,18 +45,3 @@ public class UserSettingsController {
 
 }
 
-@ResponseStatus(value = HttpStatus.NOT_FOUND)
-class ProfileNotFoundException extends RuntimeException {
-
-    ProfileNotFoundException(String message) {
-        super(message);
-    }
-}
-
-@ResponseStatus(value = HttpStatus.NOT_FOUND)
-class UserSettingsNotFoundException extends RuntimeException {
-
-    UserSettingsNotFoundException(String message) {
-        super(message);
-    }
-}
