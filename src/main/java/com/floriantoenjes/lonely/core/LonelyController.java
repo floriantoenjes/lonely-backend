@@ -13,10 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
@@ -59,8 +56,8 @@ public class LonelyController {
         float signedInUserLat = (float) signedInUserLocation.getLatitude();
         float signedInUserLng = (float) signedInUserLocation.getLongitude();
 
-        List<Profile> lonelyProfilesInRange = StreamSupport.stream(lonelyProfiles.spliterator(), false)
-                .filter(profile -> {
+        List<ProfileWithDistance> lonelyProfilesInRange = StreamSupport.stream(lonelyProfiles.spliterator(), false)
+                .map(profile -> {
 
                     Location profileLocation = profile.getLocation();
                     float profileLat = (float) profileLocation.getLatitude();
@@ -69,20 +66,32 @@ public class LonelyController {
                     LocalDate from = LocalDate.now().minusYears(signedInUserSettings.getMeetUpAgeTo());
                     LocalDate to = LocalDate.now().minusYears(signedInUserSettings.getMeetUpAgeFrom());
 
-                    return isAgeInRange(profile.getBirthDate(), from, to)
-                            && isInRadius(signedInUserLat, signedInUserLng,
-                            profileLat, profileLng, signedInUserSettings.getRadius());
+                    ProfileWithDistance profileWithDistance = new ProfileWithDistance();
+                    profileWithDistance.profile = profile;
+                    profileWithDistance.distanceInKm =
+                            (int) Math.round(distFrom(signedInUserLat, signedInUserLng, profileLat, profileLng) / 1000.0);
+
+                    if (isAgeInRange(profile.getBirthDate(), from, to)
+                            && profileWithDistance.distanceInKm <= signedInUserSettings.getRadius()) {
+
+                        return profileWithDistance;
+                    } else {
+                        return null;
+                    }
 
                 }).collect(Collectors.toList());
 
-        lonelyProfilesInRange.forEach(profile -> {
+        lonelyProfilesInRange.stream().filter(Objects::nonNull).forEach(profileWithDistance -> {
             Map<String, Object> partialProfileMap = new HashMap<>();
+            Profile profile = profileWithDistance.profile;
 
             partialProfileMap.put("firstName", profile.getFirstName());
             partialProfileMap.put("description", profile.getDescription());
             partialProfileMap.put("pictureURL", profile.getPictureURL());
             partialProfileMap.put("sex", profile.getSex());
             partialProfileMap.put("location", profile.getLocation());
+
+            partialProfileMap.put("distanceInKm", profileWithDistance.distanceInKm);
 
             partialProfileList.add(partialProfileMap);
         });
@@ -109,5 +118,10 @@ public class LonelyController {
         float dist = (float) (earthRadius * c);
 
         return dist;
+    }
+
+    private class ProfileWithDistance {
+        Profile profile;
+        int distanceInKm;
     }
 }
