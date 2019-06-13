@@ -66,15 +66,15 @@ public class LonelyController {
                     LocalDate from = LocalDate.now().minusYears(signedInUserSettings.getMeetUpAgeTo());
                     LocalDate to = LocalDate.now().minusYears(signedInUserSettings.getMeetUpAgeFrom());
 
-                    ProfileWithDistance profileWithDistance = new ProfileWithDistance();
-                    profileWithDistance.profile = profile;
-                    profileWithDistance.distanceInKm =
-                            (int) Math.round(distFrom(signedInUserLat, signedInUserLng, profileLat, profileLng) / 1000.0);
+                    int distanceInKm = (int) Math.round(
+                            distFrom(signedInUserLat, signedInUserLng, profileLat, profileLng) / 1000.0
+                    );
+
 
                     if (isAgeInRange(profile.getBirthDate(), from, to)
-                            && profileWithDistance.distanceInKm <= signedInUserSettings.getRadius()) {
+                            && distanceInKm <= signedInUserSettings.getRadius()) {
 
-                        return profileWithDistance;
+                        return new ProfileWithDistance(profile, distanceInKm);
                     } else {
                         return null;
                     }
@@ -103,10 +103,6 @@ public class LonelyController {
         return date.isAfter(from) && date.isBefore(to);
     }
 
-    private boolean isInRadius(float lat1, float lng1, float lat2, float lng2, int radius) {
-        return distFrom(lat1, lng1, lat2, lng2) / 1000.0 <= radius;
-    }
-
     private static float distFrom(float lat1, float lng1, float lat2, float lng2) {
         double earthRadius = 6_371_000; //meters
         double dLat = Math.toRadians(lat2 - lat1);
@@ -123,5 +119,10 @@ public class LonelyController {
     private class ProfileWithDistance {
         Profile profile;
         int distanceInKm;
+
+        private ProfileWithDistance(Profile profile, int distanceInKm) {
+            this.profile = profile;
+            this.distanceInKm = distanceInKm;
+        }
     }
 }
