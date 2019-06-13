@@ -22,6 +22,8 @@ public class Profile {
 
     private String lastName;
 
+    private String city;
+
     private Location location;
 
     private Sex sex;

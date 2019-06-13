@@ -89,6 +89,7 @@ public class LonelyController {
             partialProfileMap.put("description", profile.getDescription());
             partialProfileMap.put("pictureURL", profile.getPictureURL());
             partialProfileMap.put("sex", profile.getSex());
+            partialProfileMap.put("city", profile.getCity());
             partialProfileMap.put("location", profile.getLocation());
 
             partialProfileMap.put("distanceInKm", profileWithDistance.distanceInKm);
