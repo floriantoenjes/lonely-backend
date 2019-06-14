@@ -85,6 +85,7 @@ public class LonelyController {
             Map<String, Object> partialProfileMap = new HashMap<>();
             Profile profile = profileWithDistance.profile;
 
+            partialProfileMap.put("username", profile.getUsername());
             partialProfileMap.put("firstName", profile.getFirstName());
             partialProfileMap.put("description", profile.getDescription());
             partialProfileMap.put("pictureURL", profile.getPictureURL());
