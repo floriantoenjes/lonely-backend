@@ -49,7 +49,9 @@ public class LonelyController {
         );
 
         List<String> userIds = lonelyUserSettings.stream()
+                .filter(settings -> !settings.getId().equals(signedInUserSettings.getId()))
                 .map(settings -> settings.getProfile().getId()).collect(Collectors.toList());
+
         Iterable<Profile> lonelyProfiles = profileRepository.findAllById(userIds);
 
         Location signedInUserLocation = signedInUserProfile.getLocation();
