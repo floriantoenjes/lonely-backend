@@ -8,7 +8,7 @@ import java.util.Optional;
 import static com.floriantoenjes.lonely.utils.AuthUtils.getUsernameFromAuth;
 
 @RestController
-@RequestMapping("/profile")
+@RequestMapping("/profiles")
 public class ProfileController {
 
     private ProfileRepository profileRepository;
@@ -34,8 +34,13 @@ public class ProfileController {
     }
 
     @GetMapping("/my-profile")
-    public Optional<Profile> getProfile() {
+    public Optional<Profile> getSignedInUserProfile() {
         return profileRepository.findByUsername(getUsernameFromAuth());
+    }
+
+    @GetMapping("/by-username/{username}")
+    public Optional<Profile> getProfile(@PathVariable String username) {
+        return profileRepository.findByUsername(username);
     }
 
 }
