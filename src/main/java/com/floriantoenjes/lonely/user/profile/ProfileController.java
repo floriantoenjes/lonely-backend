@@ -22,6 +22,11 @@ public class ProfileController {
         return profileRepository.findAll();
     }
 
+    @PostMapping("by-usernames")
+    public List<Profile> getProfilesByUsernames(@RequestBody List<String> usernames) {
+        return profileRepository.findAllByUsernameIn(usernames);
+    }
+
     @PostMapping
     public Profile updateProfile(@RequestBody Profile profile) {
         String username = getUsernameFromAuth();
